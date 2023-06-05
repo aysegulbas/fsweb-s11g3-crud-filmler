@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import useAxios, { REQ_TYPES } from "../endpoints/useAxios";
 
-const EditMovieForm = (props) => {
+const AddMovieForm = (props) => {
   const { id } = useParams();
   const { push } = useHistory();
 
@@ -17,25 +17,8 @@ const EditMovieForm = (props) => {
     metascore: 0,
     description: "",
   });
-  const [getMovie] = useAxios();
-  const [putMovie] = useAxios();
-  useEffect(() => {
-    getMovie({
-      endpoint: `movies/${id}`,
-      reqType: REQ_TYPES.GET,
-    }).then((res) => {
-      setMovie(res);
-    });
+  const [postmovie] = useAxios();
 
-    // axios
-    //   .get(`http://localhost:9000/api/movies/${id}`)
-    //   .then((res) => {
-    //     setMovie(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
-  }, []);
   const handleChange = (e) => {
     setMovie({
       ...movie,
@@ -45,19 +28,19 @@ const EditMovieForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    putMovie({
-      endpoint: `movies/${id}`,
-      reqType: REQ_TYPES.PUT,
+    postmovie({
+      endpoint: "movies",
+      reqType: REQ_TYPES.POST,
       payload: movie,
     }).then((res) => {
       setMovies(res);
-      push(`/movies/${movie.id}`);
+      push(`/movies`);
     });
     // axios
-    //   .put(`http://localhost:9000/api/movies/${id}`, movie)
+    //   .post(`http://localhost:9000/api/movies/`, movie)
     //   .then((res) => {
     //     setMovies(res.data);
-    //     push(`/movies/${movie.id}`);
+    //     push(`/movies`);
     //   })
     //   .catch((err) => {
     //     console.log(err);
@@ -123,7 +106,7 @@ const EditMovieForm = (props) => {
         </div>
 
         <div className="px-5 py-4 border-t border-zinc-200 flex justify-end gap-2">
-          <Link to={`/movies/${id}`} className="myButton bg-zinc-500">
+          <Link to={`/movies/`} className="myButton bg-zinc-500">
             Vazgeç
           </Link>
           <button
@@ -138,4 +121,4 @@ const EditMovieForm = (props) => {
   );
 };
 
-export default EditMovieForm;
+export default AddMovieForm;
